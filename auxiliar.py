@@ -40,7 +40,7 @@ def get_fitness(G, node):
 
 def imitate(G,node, model):
     E = 0.01
-    error = random.random() - (2 * E)
+    error = random.random() * (2 * E)
     G.nodes[node]['p'] = G.nodes[model]['p'] + (error - E)
     G.nodes[node]['q'] = G.nodes[model]['q'] + (error - E)
 
