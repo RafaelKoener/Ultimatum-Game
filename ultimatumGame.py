@@ -6,7 +6,7 @@ import numpy as np
 if __name__ == "__main__":
 
     # for replicating G_size = 10000
-    G_size = 100
+    G_size = 10
     # G = nx.complete_graph(G_size)
     G = nx.barabasi_albert_graph(G_size,3)
     p_values = np.random.uniform(0, 1, 100)
@@ -17,16 +17,6 @@ if __name__ == "__main__":
     nx.set_node_attributes(G, p, 'p')
     nx.set_node_attributes(G, q, 'q')
     nx.set_node_attributes(G, f, 'f')
-
-    # degrees = dict(G.degree())
-    # values = sorted(set(degrees.values()))
-    # hist = [list(degrees.values()).count(x) for x in values]
-    # fig = plt.figure(figsize=(6, 6))
-    # plt.plot(values, hist, 'g-')
-    # plt.xlabel('Degree')
-    # plt.ylabel('Number of nodes')
-    # plt.title('Ultimatum Game Graph Degree Distribution')
-    # plt.show()
 
     to_plot = {}
     N = 100
@@ -44,14 +34,15 @@ if __name__ == "__main__":
         fitness_j = get_fitness(G, node_j)
         if can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j)):
             imitate(G,node_i, node_j)
-        print(average_p(G), average_q(G))  # ESTÃO MAIORES QUE 1!!!!!!
+        print(average_p(G), average_q(G))
         if k%100==0:
             to_plot[k//10] = [average_p(G), average_q(G)]
         if k in time_steps:
             hist, bin_edges = np.histogram(list(nx.get_node_attributes(G, 'p').values()), bins=20, range=(0, 1))
-            plt.plot(bin_edges[1:], hist, '-o')
-            plt.title('timestep'+str(k))
-            plt.show()
+            plt.plot(bin_edges[1:], hist, '-o', label=str(k)+' step')
+    plt.title('P values distribution')
+    plt.legend()
+    plt.show()
 
     plot_p = [v[0] for v in to_plot.values()]
     plot_q = [v[1] for v in to_plot.values()]
@@ -59,9 +50,11 @@ if __name__ == "__main__":
     f, (ax1, ax2) = plt.subplots(1,2, sharey=True, figsize=(20,7))
     ax1.plot(list(to_plot.keys()), plot_p, c='b', label='average p value')
     ax1.plot(list(to_plot.keys()), plot_q, c='r', label='average q value')
-    ax1.set_xlabel('time' )
+    ax1.set_xlabel('time')
     ax1.set_ylabel('p and q values')
     ax1.set_title('p and q values evolution')
+    start, end = ax1.get_xlim()
+    ax1.yaxis.set_ticks(np.arange(start, end, 0.1))
     ax1.legend()
 
     ax2.loglog(list(to_plot.keys()), plot_p, c='b', label='average p value')

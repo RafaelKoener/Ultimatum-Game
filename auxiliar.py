@@ -40,9 +40,10 @@ def get_fitness(G, node):
 
 def imitate(G,node, model):
     E = 0.01
-    error = random.random() * (2 * E)
-    G.nodes[node]['p'] = G.nodes[model]['p'] + (error - E)
-    G.nodes[node]['q'] = G.nodes[model]['q'] + (error - E)
+    error_p = random.random() * (2 * E)
+    error_q = random.random() * (2 * E)
+    G.nodes[node]['p'] = G.nodes[model]['p'] + (error_p - E)
+    G.nodes[node]['q'] = G.nodes[model]['q'] + (error_q - E)
 
     if (G.nodes[node]['p'] > 1):
         G.nodes[node]['p'] = 1
