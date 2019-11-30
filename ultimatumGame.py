@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 from auxiliar import *
 import numpy as np
 
@@ -17,16 +18,6 @@ if __name__ == "__main__":
     nx.set_node_attributes(G, p, 'p')
     nx.set_node_attributes(G, q, 'q')
     nx.set_node_attributes(G, f, 'f')
-
-    # degrees = dict(G.degree())
-    # values = sorted(set(degrees.values()))
-    # hist = [list(degrees.values()).count(x) for x in values]
-    # fig = plt.figure(figsize=(6, 6))
-    # plt.plot(values, hist, 'g-')
-    # plt.xlabel('Degree')
-    # plt.ylabel('Number of nodes')
-    # plt.title('Ultimatum Game Graph Degree Distribution')
-    # plt.show()
 
     to_plot = {}
     N = 100
@@ -57,21 +48,22 @@ if __name__ == "__main__":
     plot_p = [v[0] for v in to_plot.values()]
     plot_q = [v[1] for v in to_plot.values()]
 
-    f, (ax1, ax2) = plt.subplots(1,2, sharey=True, figsize=(20,7))
-    ax1.plot(list(to_plot.keys()), plot_p, c='b', label='average p value')
+    fig, (ax1, ax2) = plt.subplots(1,2, figsize=(20,7))
+    ax1.plot(list(to_plot.keys()), plot_p, c='g', label='average p value')
     ax1.plot(list(to_plot.keys()), plot_q, c='r', label='average q value')
+    ax1.set_ylim(0,1)
+    ax1.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
     ax1.set_xlabel('time')
     ax1.set_ylabel('p and q values')
     ax1.set_title('p and q values evolution')
-    start, end = ax1.get_xlim()
-    ax1.yaxis.set_ticks(np.arange(start, end, 0.1))
     ax1.legend()
 
-    ax2.loglog(list(to_plot.keys()), plot_p, c='b', label='average p value')
+    ax2.loglog(list(to_plot.keys()), plot_p, c='g', label='average p value')
     ax2.loglog(list(to_plot.keys()), plot_q, c='r', label='average q value')
-    ax2.set_xlabel('time' )
+    ax2.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
+    ax2.set_xlabel('time')
     ax2.set_ylabel('p and q values')
-    ax2.set_title('p and q values evolution loglog')
+    ax2.set_title('p and q values evolution in loglog scale')
     ax2.legend()
     plt.show()
 """
