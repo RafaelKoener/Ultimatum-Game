@@ -12,11 +12,21 @@ if __name__ == "__main__":
     p_values = np.random.uniform(0, 1, 100)
     q_values = np.random.uniform(0, 1, 100)
     p = {k: p_values[k] for k in range(G_size)}
-    q = {k: p_values[k] for k in range(G_size)}
+    q = {k: q_values[k] for k in range(G_size)}
     f = {k: 0 for k in range(G_size)}
     nx.set_node_attributes(G, p, 'p')
     nx.set_node_attributes(G, q, 'q')
     nx.set_node_attributes(G, f, 'f')
+
+    # degrees = dict(G.degree())
+    # values = sorted(set(degrees.values()))
+    # hist = [list(degrees.values()).count(x) for x in values]
+    # fig = plt.figure(figsize=(6, 6))
+    # plt.plot(values, hist, 'g-')
+    # plt.xlabel('Degree')
+    # plt.ylabel('Number of nodes')
+    # plt.title('Ultimatum Game Graph Degree Distribution')
+    # plt.show()
 
     to_plot = {}
     N = 100
@@ -64,3 +74,27 @@ if __name__ == "__main__":
     ax2.set_title('p and q values evolution loglog')
     ax2.legend()
     plt.show()
+"""
+E = [0.001, 0.002, 0.003, 0.004,0.005, 0.007, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.15, 0.2]
+N = 100
+    P = []
+    Q = []
+    for i in E:
+        for k in range(N*len(G)):
+            node_i = select_random_node(G)
+            play_round(G, node_i)
+            node_j = get_random_neighbor(G, node_i)
+            fitness_i = get_fitness(G, node_i)
+            fitness_j = get_fitness(G, node_j)
+            if fitness_j > fitness_i:
+                imitate(G, node_i, node_j, i)
+        P.append(average_p(G))
+        Q.append(average_q(G))
+    print('P', P)
+    print('Q', Q)
+    plt.plot(E, P, label="Average P")
+    plt.plot(E, Q, label="Average Q")
+    plt.legend()
+    plt.show()
+    plt.close()
+"""
