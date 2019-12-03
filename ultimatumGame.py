@@ -7,11 +7,12 @@ import numpy as np
 if __name__ == "__main__":
 
     # for replicating G_size = 10000
-    G_size = 10
+    G_size = 100
     # G = nx.complete_graph(G_size)
-    G = nx.barabasi_albert_graph(G_size,3)
-    p_values = np.random.uniform(0, 1, 100)
-    q_values = np.random.uniform(0, 1, 100)
+    #G = nx.barabasi_albert_graph(G_size,3)
+    G = nx.scale_free_graph(G_size)
+    p_values = np.random.uniform(0, 1, 150)
+    q_values = np.random.uniform(0, 1, 150)
     p = {k: p_values[k] for k in range(G_size)}
     q = {k: q_values[k] for k in range(G_size)}
     f = {k: 0 for k in range(G_size)}
