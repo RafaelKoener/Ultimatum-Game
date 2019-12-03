@@ -36,6 +36,7 @@ if __name__ == "__main__":
         if can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j)):
             imitate(G,node_i, node_j)
         print(average_p(G), average_q(G))
+        social_penalty(G)
         if k%100==0:
             to_plot[k//10] = [average_p(G), average_q(G)]
         if k in time_steps:
@@ -66,9 +67,10 @@ if __name__ == "__main__":
     ax2.set_title('p and q values evolution in loglog scale')
     ax2.legend()
     plt.show()
+
 """
-E = [0.001, 0.002, 0.003, 0.004,0.005, 0.007, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.15, 0.2]
-N = 100
+    E = [0.001, 0.002, 0.003, 0.004,0.005, 0.007, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.15, 0.2]
+    N = 100
     P = []
     Q = []
     for i in E:
@@ -78,8 +80,8 @@ N = 100
             node_j = get_random_neighbor(G, node_i)
             fitness_i = get_fitness(G, node_i)
             fitness_j = get_fitness(G, node_j)
-            if fitness_j > fitness_i:
-                imitate(G, node_i, node_j, i)
+            if can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j)):
+                imitate(G,node_i, node_j,i)
         P.append(average_p(G))
         Q.append(average_q(G))
     print('P', P)
@@ -89,4 +91,5 @@ N = 100
     plt.legend()
     plt.show()
     plt.close()
+
 """

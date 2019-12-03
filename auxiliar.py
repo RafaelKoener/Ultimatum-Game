@@ -67,3 +67,15 @@ def can_imitate(f_i, f_j, d_i, d_j):
         return choice
     return False
 
+def social_penalty(G):
+    nodes = nx.get_node_attributes(G, 'f')
+    node_min = min(nodes, key=nodes.get)
+    neighbors = G.neighbors(node_min)
+    l = [n for n in neighbors]
+    l.append(node_min)
+    print(l)
+    for i in l:
+        G.nodes[i]['p'] = random.random()
+        G.nodes[i]['q'] = random.random()
+        G.nodes[i]['f'] = 0
+
