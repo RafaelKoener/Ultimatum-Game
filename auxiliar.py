@@ -18,7 +18,10 @@ def select_random_node(G):
 
 def get_random_neighbor(G, node):
     neighbors = [n for n in G.neighbors(node)]
-    return random.choice(neighbors)
+    if neighbors == []:
+        return node
+    else:
+        return random.choice(neighbors)
 
 
 def play_with(G,node, neighbor):
