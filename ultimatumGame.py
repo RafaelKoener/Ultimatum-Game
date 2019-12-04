@@ -7,7 +7,7 @@ from graph_generation import *
 
 if __name__ == "__main__":
 
-    G_size = 10000
+    G_size = 1000
     strategy = 'ipq'  # independent p and q: ipq, p=q: pq, p=q-1: pq1, mixed: mixed
 
     graph_type = 'barabasi'  # scale free graph: barabasi ; erdos-renyi graph: erdos
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     to_plot = {}
     to_plot_imitate = {}
     N = 10
-    n_runs = 100
+    n_runs = 10
 
     time_steps = [0,  9999, 19999, 29999, 39999, 49999, 99999]
     # time_steps = [0, 99, 999, 4999, 9999, 19999]
@@ -55,7 +55,8 @@ if __name__ == "__main__":
         # plt.title('P values distribution for run '+ str(run))
         # plt.legend()
         # plt.show()
-
+    #draw centrality network
+    draw_centrality(G)
     # plot average results for p values
     plot_x = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65,
               0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
