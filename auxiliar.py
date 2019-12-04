@@ -20,7 +20,10 @@ def select_random_node(G):
 
 def get_random_neighbor(G, node):
     neighbors = [n for n in G.neighbors(node)]
-    return random.choice(neighbors)
+    if neighbors == []:
+        return node
+    else:
+        return random.choice(neighbors)
 
 
 def play_with(G, node, neighbor):
@@ -67,3 +70,28 @@ def can_imitate(f_i, f_j, d_i, d_j):
         choice = np.random.choice([True, False], p=[p_imitate, 1 - p_imitate])
         return choice, f_j - f_i, p_imitate
     return False, f_j - f_i, p_imitate
+
+def social_penalty(G, strategy):
+    nodes = nx.get_node_attributes(G, 'f')
+    node_min = min(nodes, key=nodes.get)
+    neighbors = G.neighbors(node_min)
+    l = [n for n in neighbors]
+    l.append(node_min)
+    if strategy == 'ipq':
+        for i in l:
+            G.nodes[i]['p'] = random.random()
+            G.nodes[i]['q'] = random.random()
+            G.nodes[i]['f'] = 0
+    elif strategy == 'pq':
+        for i in l:
+            G.nodes[i]['p'] = random.random()
+            G.nodes[i]['q'] = G.nodes[i]['p']
+            G.nodes[i]['f'] = 0
+    elif strategy == 'pq1':
+        for i in l:
+            G.nodes[i]['q'] = random.random()
+            G.nodes[i]['p'] = 1 - G.nodes[i]['q']
+            G.nodes[i]['f'] = 0
+
+
+

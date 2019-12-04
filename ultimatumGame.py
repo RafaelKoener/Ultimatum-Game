@@ -10,13 +10,13 @@ if __name__ == "__main__":
     G_size = 10000
     strategy = 'ipq'  # independent p and q: ipq, p=q: pq, p=q-1: pq1, mixed: mixed
 
-    graph_type = 'erdos'  # scale free graph: barabasi ; erdos-renyi graph: erdos
+    graph_type = 'barabasi'  # scale free graph: barabasi ; erdos-renyi graph: erdos
     p, q = get_p_q(G_size, strategy)
     G = generate_graph(G_size, p, q, graph_type)
     to_plot = {}
     to_plot_imitate = {}
     N = 10
-    n_runs = 1
+    n_runs = 100
 
     time_steps = [0,  9999, 19999, 29999, 39999, 49999, 99999]
     # time_steps = [0, 99, 999, 4999, 9999, 19999]
@@ -30,13 +30,16 @@ if __name__ == "__main__":
             print('------------------', run, k, "------------------")
             node_i = select_random_node(G)
             play_round(G, node_i)
-            node_j = get_random_neighbor(G, node_i)
-            fitness_i = get_fitness(G, node_i)
-            fitness_j = get_fitness(G, node_j)
-            decision, delta_f, prob = can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j))
-            to_plot_imitate[k] = [delta_f] + [prob]
-            if decision:
-                imitate(G, node_i, node_j)
+            # for natural selection
+            # node_j = get_random_neighbor(G, node_i)
+            # fitness_i = get_fitness(G, node_i)
+            # fitness_j = get_fitness(G, node_j)
+            # decision, delta_f, prob = can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j))
+            # to_plot_imitate[k] = [delta_f] + [prob]
+            # if decision:
+            #     imitate(G, node_i, node_j)
+            # for social penalty
+            social_penalty(G, strategy)
             if k % 100 == 0:
                 # used to plot average p and q
                 to_plot[k // 10] = [average_p(G), average_q(G)]
@@ -150,4 +153,5 @@ N = 100
     ax2.set_title('p and q values evolution in loglog scale')
     ax2.legend()
     plt.show()
+
 """
