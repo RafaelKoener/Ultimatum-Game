@@ -9,14 +9,14 @@ if __name__ == "__main__":
 
     G_size = 10000
     strategy = 'ipq'  # independent p and q: ipq, p=q: pq, p=q-1: pq1, mixed: mixed
-
+    plt.ioff()
     graph_type = 'barabasi'  # scale free graph: barabasi ; erdos-renyi graph: erdos
     p, q = get_p_q(G_size, strategy)
     G = generate_graph(G_size, p, q, graph_type)
     to_plot = {}
     to_plot_imitate = {}
-    N = 10
-    n_runs = 100
+    N = 2
+    n_runs = 1
 
     time_steps = [0,  9999, 19999, 29999, 39999, 49999, 99999]
     # time_steps = [0, 99, 999, 4999, 9999, 19999]
@@ -31,15 +31,15 @@ if __name__ == "__main__":
             node_i = select_random_node(G)
             play_round(G, node_i)
             # for natural selection
-            # node_j = get_random_neighbor(G, node_i)
-            # fitness_i = get_fitness(G, node_i)
-            # fitness_j = get_fitness(G, node_j)
-            # decision, delta_f, prob = can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j))
-            # to_plot_imitate[k] = [delta_f] + [prob]
-            # if decision:
-            #     imitate(G, node_i, node_j)
+            node_j = get_random_neighbor(G, node_i)
+            fitness_i = get_fitness(G, node_i)
+            fitness_j = get_fitness(G, node_j)
+            decision, delta_f, prob = can_imitate(fitness_i, fitness_j, G.degree(node_i), G.degree(node_j))
+            to_plot_imitate[k] = [delta_f] + [prob]
+            if decision:
+                imitate(G, node_i, node_j)
             # for social penalty
-            social_penalty(G, strategy)
+            # social_penalty(G, strategy)
             if k % 100 == 0:
                 # used to plot average p and q
                 to_plot[k // 10] = [average_p(G), average_q(G)]
@@ -61,6 +61,7 @@ if __name__ == "__main__":
               0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
     print(plot_x)
     print(bin_edges)
+    plt.figure()
     for i in range(len(time_steps)):
         for k in runs_p:
             try:
@@ -76,9 +77,11 @@ if __name__ == "__main__":
     plt.xlabel('p')
     plt.ylabel('D(p)')
     plt.legend()
-    plt.show()
+    plt.savefig("img/1.png")
+    # plt.show()
 
     # plot average results for q values
+    plt.figure()
     for j in range(len(time_steps)):
         for k in runs_q:
             try:
@@ -93,7 +96,8 @@ if __name__ == "__main__":
     plt.xlabel('q')
     plt.ylabel('D(q)')
     plt.legend()
-    plt.show()
+    plt.savefig("img/2.png")
+    # plt.show()
 
 
 """
