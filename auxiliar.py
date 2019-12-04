@@ -2,6 +2,8 @@ import networkx as nx
 import random
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 
 def average_p(G):
@@ -93,5 +95,17 @@ def social_penalty(G, strategy):
             G.nodes[i]['p'] = 1 - G.nodes[i]['q']
             G.nodes[i]['f'] = 0
 
+def draw_centrality(G):
+    layout = nx.spring_layout(G)
+    centrality = nx.eigenvector_centrality(G)
+    nodes = nx.draw_networkx_nodes(G, layout, node_size=10, cmap=plt.cm.plasma, node_color=list(centrality.values()), nodelist=list(centrality.keys()))
+    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1))
 
+    
+    # labels = nx.draw_networkx_labels(G, layout)
+    edges = nx.draw_networkx_edges(G, layout)
 
+    plt.title('Degree Centrality')
+    plt.colorbar(nodes)
+    plt.axis('off')
+    plt.show()
